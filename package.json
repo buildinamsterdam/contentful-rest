@@ -7,13 +7,17 @@
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"exports": {
-		"./index": {
+		".": {
 			"types": "./dist/index.d.ts",
 			"import": "./dist/index.js"
 		},
 		"./getIndicatorProps": {
 			"types": "./dist/getIndicatorProps.d.ts",
 			"import": "./dist/getIndicatorProps.js"
+		},
+		"./types": {
+			"types": "./dist/types.d.ts",
+			"import": "./dist/types.js"
 		}
 	},
 	"homepage": "https://github.com/buildinamsterdam/contentful-rest#readme",
