@@ -20,13 +20,6 @@ export type EntriesList = {
 	limit: number;
 };
 
-export type SimplifiedSys = {
-	id: string;
-	contentType: string;
-	createdAt: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
-	updatedAt: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
-};
-
 export type ContentAdaptors = {
 	[EntryName in string]: AdaptorFunction;
 };
