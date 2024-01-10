@@ -21,10 +21,8 @@ type ContentfulConfig = {
 	previewToken?: string;
 };
 
-export type ContentfulAdaptorClass = {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	adapt: <T>(x: LooseObject) => T;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ContentfulAdaptorClass = any;
 
 type ContentfulFetcherArgs = {
 	config: ContentfulConfig;
