@@ -26,7 +26,7 @@ var _ContentfulFetcher_config, _ContentfulFetcher_adaptor, _ContentfulFetcher_de
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ContentfulFetcher = void 0;
 const contentful_resolve_response_1 = __importDefault(require("contentful-resolve-response"));
-const contentful_graphql_1 = require("@buildinams/contentful-graphql");
+const adaptor_1 = require("./adaptor");
 const stringifySafe_1 = require("./utils/stringifySafe");
 const API_BASE_URL = "https://cdn.contentful.com";
 const API_PREVIEW_URL = "https://preview.contentful.com";
@@ -102,7 +102,7 @@ class ContentfulFetcher {
             return (_a = data === null || data === void 0 ? void 0 : data.items) === null || _a === void 0 ? void 0 : _a[0];
         });
         __classPrivateFieldSet(this, _ContentfulFetcher_config, config, "f");
-        __classPrivateFieldSet(this, _ContentfulFetcher_adaptor, adaptor || new contentful_graphql_1.ContentfulAdaptor(), "f");
+        __classPrivateFieldSet(this, _ContentfulFetcher_adaptor, adaptor || new adaptor_1.ContentfulAdaptor(), "f");
         __classPrivateFieldSet(this, _ContentfulFetcher_defaultIsPreview, isPreview || false, "f");
     }
 }

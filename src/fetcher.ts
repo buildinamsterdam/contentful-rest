@@ -1,7 +1,7 @@
 import { Entry } from "contentful";
 import resolveResponse from "contentful-resolve-response";
 
-import { ContentfulAdaptor } from "@buildinams/contentful-graphql";
+import { ContentfulAdaptor } from "./adaptor";
 import { stringifySafe } from "./utils/stringifySafe";
 import {
 	EntriesList,
