@@ -1,4 +1,3 @@
-import { Entry } from "contentful";
 import { LooseObject } from "./types";
 
 export type Adaptor = (entry: LooseObject) => LooseObject;
@@ -57,7 +56,7 @@ export class ContentfulAdaptor {
 		return adaptor(adaptedData);
 	};
 
-	adapt = <T extends Entry>(data: T) => {
+	adapt = <T extends LooseObject>(data: T) => {
 		if (typeof data !== "object" && !Array.isArray(data)) return null;
 
 		const contentType = data?.sys?.contentType?.sys?.id || "";

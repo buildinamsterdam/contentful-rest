@@ -23,7 +23,7 @@ type ContentfulConfig = {
 
 export type ContentfulAdaptorClass = {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	adapt: <T>(x: any) => T;
+	adapt: <T>(x: LooseObject) => T;
 };
 
 type ContentfulFetcherArgs = {
