@@ -1,4 +1,5 @@
-import { EntriesResponse, LooseObject, Query } from "./types";
+import { Entry } from "contentful";
+import { EntriesResponse, Query } from "./types";
 type ContentfulConfig = {
     spaceId: string;
     environment?: string;
@@ -26,16 +27,16 @@ export declare class ContentfulFetcher {
      * @async @function getEntry
      * @description Make a Contentful request to a single entry
      */
-    getEntry: <T extends LooseObject>(entryId: string, preview?: boolean, unAdaptedData?: boolean) => Promise<T | null>;
+    getEntry: <T extends Entry<import("contentful").EntrySkeletonType<import("contentful").FieldsType, string>, import("contentful").ChainModifiers, string>>(entryId: string, preview?: boolean, unAdaptedData?: boolean) => Promise<T | null>;
     /**
      * @async @function getEntries
      * @description Make a Contentful request to retrieve multiple entries
      */
-    getEntries: <T extends LooseObject>({ query, preview, unAdaptedData, options, }: getEntriesArg) => Promise<EntriesResponse<T> | null>;
+    getEntries: <T extends Entry<import("contentful").EntrySkeletonType<import("contentful").FieldsType, string>, import("contentful").ChainModifiers, string>>({ query, preview, unAdaptedData, options, }: getEntriesArg) => Promise<EntriesResponse<T> | null>;
     /**
      * @async @function getInitialEntry
      * @description Make a Contentful request to retrieve multiple entries and return the first result if found
      */
-    getInitialEntry: <T extends LooseObject>(arg: getEntriesArg) => Promise<T | undefined>;
+    getInitialEntry: <T extends Entry<import("contentful").EntrySkeletonType<import("contentful").FieldsType, string>, import("contentful").ChainModifiers, string>>(arg: getEntriesArg) => Promise<T | undefined>;
 }
 export {};

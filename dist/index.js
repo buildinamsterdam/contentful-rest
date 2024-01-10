@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContentfulFetcher = exports.enableLivePreview = exports.ContentfulAdaptor = void 0;
-var contentful_graphql_1 = require("@buildinams/contentful-graphql");
-Object.defineProperty(exports, "ContentfulAdaptor", { enumerable: true, get: function () { return contentful_graphql_1.ContentfulAdaptor; } });
-var getIndicatorProps_1 = require("@buildinams/contentful-graphql/dist/getIndicatorProps");
-Object.defineProperty(exports, "enableLivePreview", { enumerable: true, get: function () { return getIndicatorProps_1.enableLivePreview; } });
+exports.getIndicatorProps = exports.enableLivePreview = exports.ContentfulFetcher = exports.ContentfulAdaptor = void 0;
+var adaptor_1 = require("./adaptor");
+Object.defineProperty(exports, "ContentfulAdaptor", { enumerable: true, get: function () { return adaptor_1.ContentfulAdaptor; } });
 var fetcher_1 = require("./fetcher");
 Object.defineProperty(exports, "ContentfulFetcher", { enumerable: true, get: function () { return fetcher_1.ContentfulFetcher; } });
+var getIndicatorProps_1 = require("@buildinams/contentful-graphql/dist/getIndicatorProps");
+Object.defineProperty(exports, "enableLivePreview", { enumerable: true, get: function () { return getIndicatorProps_1.enableLivePreview; } });
+Object.defineProperty(exports, "getIndicatorProps", { enumerable: true, get: function () { return getIndicatorProps_1.getIndicatorProps; } });

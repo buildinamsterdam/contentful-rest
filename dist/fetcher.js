@@ -88,7 +88,7 @@ class ContentfulFetcher {
                 limit: cfData.limit,
             };
             if (!unAdaptedData) {
-                formattedData.items = __classPrivateFieldGet(this, _ContentfulFetcher_adaptor, "f").adapt(formattedData.items);
+                formattedData.items = formattedData.items.map((item) => __classPrivateFieldGet(this, _ContentfulFetcher_adaptor, "f").adapt(item));
             }
             return formattedData;
         });

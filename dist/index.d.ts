@@ -1,3 +1,3 @@
-export { ContentfulAdaptor } from "@buildinams/contentful-graphql";
-export { enableLivePreview } from "@buildinams/contentful-graphql/dist/getIndicatorProps";
+export { ContentfulAdaptor } from "./adaptor";
 export { ContentfulFetcher } from "./fetcher";
+export { enableLivePreview, getIndicatorProps, } from "@buildinams/contentful-graphql/dist/getIndicatorProps";

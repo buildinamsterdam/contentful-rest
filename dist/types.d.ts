@@ -1,7 +1,5 @@
 import { Entry } from "contentful";
-export type LooseObject = {
-    [x: string | number | symbol]: any;
-};
+export type LooseObject = Record<string | number | symbol, any>;
 export type SearchParams = Record<string, string | number>;
 export type Query = SearchParams & {
     content_type?: string;
@@ -13,12 +11,6 @@ export type EntriesList = {
     total: number;
     skip: number;
     limit: number;
-};
-export type SimplifiedSys = {
-    id: string;
-    contentType: string;
-    createdAt: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
-    updatedAt: `${number}-${number}-${number}T${number}:${number}:${number}Z`;
 };
 export type ContentAdaptors = {
     [EntryName in string]: AdaptorFunction;
