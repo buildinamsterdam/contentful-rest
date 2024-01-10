@@ -89,7 +89,7 @@ export class ContentfulFetcher {
 	 * @async @function getEntry
 	 * @description Make a Contentful request to a single entry
 	 */
-	getEntry = async <T extends Entry>(
+	getEntry = async <T extends LooseObject>(
 		entryId: string,
 		preview = false,
 		unAdaptedData = false,
@@ -108,7 +108,7 @@ export class ContentfulFetcher {
 	 * @async @function getEntries
 	 * @description Make a Contentful request to retrieve multiple entries
 	 */
-	getEntries = async <T extends Entry>({
+	getEntries = async <T extends LooseObject>({
 		query,
 		preview = false,
 		unAdaptedData = false,
@@ -148,7 +148,7 @@ export class ContentfulFetcher {
 	 * @async @function getInitialEntry
 	 * @description Make a Contentful request to retrieve multiple entries and return the first result if found
 	 */
-	getInitialEntry = async <T extends Entry>(arg: getEntriesArg) => {
+	getInitialEntry = async <T extends LooseObject>(arg: getEntriesArg) => {
 		const data = await this.getEntries<T>(arg);
 		return data?.items?.[0];
 	};
