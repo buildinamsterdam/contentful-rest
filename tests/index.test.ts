@@ -1,12 +1,38 @@
 import { ContentfulAdaptor } from "../src";
 
 const DATA = {
-	__typename: "page",
-	title: "Page title",
-	body: [
-		{ __typename: "content", title: "Block title" },
-		{ __typename: "media", src: "http://" },
-	],
+	sys: {
+		contentType: {
+			sys: {
+				id: "page",
+			},
+		},
+	},
+	fields: {
+		title: "Page title",
+		body: [
+			{
+				sys: {
+					contentType: {
+						sys: {
+							id: "content",
+						},
+					},
+				},
+				fields: { title: "Block title" },
+			},
+			{
+				sys: {
+					contentType: {
+						sys: {
+							id: "media",
+						},
+					},
+				},
+				fields: { src: "http://" },
+			},
+		],
+	},
 };
 
 describe("ContentfulAdaptor", () => {
@@ -20,9 +46,9 @@ describe("ContentfulAdaptor", () => {
 			},
 		});
 
-		const outcome = Adaptor.adapt(DATA);
+		const outcome = Adaptor.adapt(DATA) || {};
 
 		expect(outcome.title).toBe("Adapted page title");
-		expect(outcome.body[0].subtitle).toBe("Block subtitle");
+		expect(outcome.fields.body[0].subtitle).toBe("Block subtitle");
 	});
 });

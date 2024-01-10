@@ -13,6 +13,9 @@ export type ContentfulAdaptorArgs = {
 
 const fallbackPageAdaptor: Adaptor = (x) => x;
 
+const getEntryContentType = (data: LooseObject) =>
+	data?.sys?.contentType?.sys?.id || "";
+
 /**
  * @function ContentfulAdaptor
  * @description Generate a client to adapt the provided data
@@ -42,6 +45,8 @@ export class ContentfulAdaptor {
 
 		if (typeof data !== "object") return data;
 
+		const contentType = getEntryContentType(data);
+
 		const adaptedData = Object.entries(data).reduce(
 			(acc: LooseObject, [key, val]) => {
 				acc[key] = this.#adaptData(val);
@@ -50,7 +55,7 @@ export class ContentfulAdaptor {
 			{},
 		);
 
-		const adaptor = this.#contentAdaptors[adaptedData.__typename];
+		const adaptor = this.#contentAdaptors[contentType];
 
 		if (!adaptor) return adaptedData;
 		return adaptor(adaptedData);
@@ -59,7 +64,7 @@ export class ContentfulAdaptor {
 	adapt = <T extends LooseObject>(data: T) => {
 		if (typeof data !== "object" && !Array.isArray(data)) return null;
 
-		const contentType = data?.sys?.contentType?.sys?.id || "";
+		const contentType = getEntryContentType(data);
 
 		const pageAdaptor = this.#pageAdaptors[contentType] || fallbackPageAdaptor;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
