@@ -89,7 +89,7 @@ export class ContentfulFetcher {
 	 * @async @function getEntry
 	 * @description Make a Contentful request to a single entry
 	 */
-	getEntry = async <T extends LooseObject>(
+	getEntry = async <T extends Entry>(
 		entryId: string,
 		preview = false,
 		unAdaptedData = false,
@@ -108,7 +108,7 @@ export class ContentfulFetcher {
 	 * @async @function getEntries
 	 * @description Make a Contentful request to retrieve multiple entries
 	 */
-	getEntries = async <T extends LooseObject>({
+	getEntries = async <T extends Entry>({
 		query,
 		preview = false,
 		unAdaptedData = false,
@@ -129,14 +129,16 @@ export class ContentfulFetcher {
 			items: resolveResponse(wrappedData, {
 				removeUnresolved: true,
 				itemEntryPoints: ["fields"],
-			}),
+			}) as T[],
 			total: cfData.total,
 			skip: cfData.skip,
 			limit: cfData.limit,
 		};
 
 		if (!unAdaptedData) {
-			formattedData.items = this.#adaptor.adapt(formattedData.items);
+			formattedData.items = formattedData.items.map((item) =>
+				this.#adaptor.adapt(item),
+			);
 		}
 
 		return formattedData as EntriesResponse<T>;
@@ -146,7 +148,7 @@ export class ContentfulFetcher {
 	 * @async @function getInitialEntry
 	 * @description Make a Contentful request to retrieve multiple entries and return the first result if found
 	 */
-	getInitialEntry = async <T extends LooseObject>(arg: getEntriesArg) => {
+	getInitialEntry = async <T extends Entry>(arg: getEntriesArg) => {
 		const data = await this.getEntries<T>(arg);
 		return data?.items?.[0];
 	};

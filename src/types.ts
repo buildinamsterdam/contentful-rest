@@ -1,9 +1,7 @@
 import { Entry } from "contentful";
 
-export type LooseObject = {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	[x: string | number | symbol]: any;
-};
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type LooseObject = Record<string | number | symbol, any>;
 
 export type SearchParams = Record<string, string | number>;
 
