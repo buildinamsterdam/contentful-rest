@@ -6,7 +6,7 @@ type ContentfulConfig = {
     previewToken?: string;
 };
 export type ContentfulAdaptorClass = {
-    adapt: <T>(x: any) => T;
+    adapt: <T>(x: LooseObject) => T;
 };
 type ContentfulFetcherArgs = {
     config: ContentfulConfig;
