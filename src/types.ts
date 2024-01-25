@@ -45,3 +45,17 @@ export type EntriesResponse<T extends LooseObject> = {
 	skip: number;
 	limit: number;
 };
+
+export type getEntryArg = {
+	entryId: string;
+	preview?: boolean;
+	unAdaptedData?: boolean;
+	options?: RequestInit;
+};
+
+export type getEntriesArg = {
+	query: Query;
+	preview?: boolean;
+	unAdaptedData?: boolean;
+	options?: RequestInit;
+};

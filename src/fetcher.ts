@@ -7,8 +7,9 @@ import {
 	EntriesList,
 	EntriesResponse,
 	LooseObject,
-	Query,
 	SearchParams,
+	getEntriesArg,
+	getEntryArg,
 } from "./types";
 
 const API_BASE_URL = "https://cdn.contentful.com";
@@ -34,13 +35,6 @@ type FetchArgs = {
 	path: string;
 	searchParams?: SearchParams;
 	preview?: boolean;
-	options?: RequestInit;
-};
-
-type getEntriesArg = {
-	query: Query;
-	preview?: boolean;
-	unAdaptedData?: boolean;
 	options?: RequestInit;
 };
 
@@ -87,14 +81,16 @@ export class ContentfulFetcher {
 	 * @async @function getEntry
 	 * @description Make a Contentful request to a single entry
 	 */
-	getEntry = async <T extends LooseObject>(
-		entryId: string,
+	getEntry = async <T extends LooseObject>({
+		entryId,
 		preview = false,
 		unAdaptedData = false,
-	) => {
+		options,
+	}: getEntryArg) => {
 		const data = await this.#cfFetch<Entry>({
 			path: `entries/${entryId}`,
 			preview,
+			options,
 		});
 
 		if (!data) return null;
