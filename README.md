@@ -83,7 +83,7 @@ const Adaptor = new ContentfulAdaptor({
 
 This generates a JavaScript class that gives you the option to adapt the data. Expected arguments;
 
-- **fieldAdaptors** - Adaptors to run on the specific fields, for example the "Asset" field
+- **fieldAdaptors** - Adaptors to run on the specific fields, for example the "Asset" field.
 - **contentAdaptors** - Content adaptors run recursively over the provided data. When an object matches the pattern: `{ __typename: {key} }` it will run the adaptor with the matching `{key}`.
 - **pageAdaptors** - Page adaptors only run top level. These can be used if you want to format the initial data but you don't want to run to run them when they are referenced. Example; we want a `pageLayout` to contain all data but when referenced in a `cta` we don't want the page adaptor.
 
