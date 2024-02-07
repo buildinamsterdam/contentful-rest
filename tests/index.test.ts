@@ -29,7 +29,16 @@ const DATA = {
 						},
 					},
 				},
-				fields: { src: "http://" },
+				fields: {
+					src: {
+						sys: {
+							type: "Asset",
+						},
+						fields: {
+							src: "http://",
+						},
+					},
+				},
 			},
 		],
 	},
@@ -38,6 +47,9 @@ const DATA = {
 describe("ContentfulAdaptor", () => {
 	it("should work with the first argument", () => {
 		const Adaptor = new ContentfulAdaptor({
+			fieldAdaptors: {
+				Asset: (data) => data.fields.src,
+			},
 			contentAdaptors: {
 				content: (data) => ({ ...data, subtitle: "Block subtitle" }),
 			},
@@ -50,5 +62,6 @@ describe("ContentfulAdaptor", () => {
 
 		expect(outcome.title).toBe("Adapted page title");
 		expect(outcome.fields.body[0].subtitle).toBe("Block subtitle");
+		expect(outcome.fields.body[1].fields.src).toBe("http://");
 	});
 });

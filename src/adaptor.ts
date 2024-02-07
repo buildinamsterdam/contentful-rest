@@ -7,25 +7,35 @@ export type AdaptorTypes = {
 };
 
 export type ContentfulAdaptorArgs = {
-	contentAdaptors: AdaptorTypes;
-	pageAdaptors: AdaptorTypes;
+	fieldAdaptors?: AdaptorTypes;
+	contentAdaptors?: AdaptorTypes;
+	pageAdaptors?: AdaptorTypes;
 };
 
 const fallbackPageAdaptor: Adaptor = (x) => x;
 
-const getEntryContentType = (data: LooseObject) =>
+const getEntryContentType = (data: LooseObject): string =>
 	data?.sys?.contentType?.sys?.id || "";
+
+const getFieldType = (data: LooseObject): string => data?.sys?.type || "";
 
 /**
  * @function ContentfulAdaptor
  * @description Generate a client to adapt the provided data
  */
 export class ContentfulAdaptor {
+	#fieldAdaptors: AdaptorTypes = {};
 	#pageAdaptors: AdaptorTypes = {};
 	#contentAdaptors: AdaptorTypes = {};
 
 	constructor(args?: ContentfulAdaptorArgs) {
-		const { contentAdaptors = {}, pageAdaptors = {} } = args || {};
+		const {
+			fieldAdaptors = {},
+			contentAdaptors = {},
+			pageAdaptors = {},
+		} = args || {};
+
+		this.#fieldAdaptors = fieldAdaptors;
 		this.#contentAdaptors = contentAdaptors;
 		this.#pageAdaptors = pageAdaptors;
 	}
@@ -35,7 +45,7 @@ export class ContentfulAdaptor {
 	 * @description
 	 */
 	#adaptData = <T>(data: T): T | Array<unknown> | null => {
-		//? Falsey data should always be null so it's parseble by NextJS, 'undefined' throws
+		//? Falsy data should always be null so it's parsable by NextJS, 'undefined' throws
 		if (!data) return null;
 
 		//? If we get an array loop the data so we resolved adapted data
@@ -46,6 +56,13 @@ export class ContentfulAdaptor {
 		if (typeof data !== "object") return data;
 
 		const contentType = getEntryContentType(data);
+
+		if (contentType === "") {
+			const fieldType = getFieldType(data);
+			const fieldAdaptor = this.#fieldAdaptors[fieldType];
+
+			if (!!fieldAdaptor) return fieldAdaptor(data);
+		}
 
 		const adaptedData = Object.entries(data).reduce(
 			(acc: LooseObject, [key, val]) => {
