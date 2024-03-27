@@ -61,7 +61,6 @@ export class ContentfulAdaptor {
 			}
 
 			return formattedData;
-			// return data.map((dataEntry: unknown) => this.#adaptData(dataEntry));
 		}
 
 		if (typeof data !== "object") return data;
