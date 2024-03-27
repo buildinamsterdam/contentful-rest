@@ -95,7 +95,7 @@ export class ContentfulFetcher {
 
 		if (!data) return null;
 		if (unAdaptedData) return data as unknown as T;
-		return this.#adaptor.adapt(data) as T;
+		return (await this.#adaptor.adapt(data)) as T;
 	};
 
 	/**
@@ -130,9 +130,13 @@ export class ContentfulFetcher {
 		};
 
 		if (!unAdaptedData) {
-			formattedData.items = formattedData.items.map((item) =>
-				this.#adaptor.adapt(item),
-			);
+			const formattedItems: T[] = [];
+
+			for (const item of formattedData.items) {
+				formattedItems.push(await this.#adaptor.adapt(item));
+			}
+
+			formattedData.items = formattedItems;
 		}
 
 		return formattedData as EntriesResponse<T>;
