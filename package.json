@@ -1,7 +1,7 @@
 {
 	"name": "@buildinams/contentful-rest",
 	"description": "Contentful REST API",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"license": "MIT",
 	"author": "Build in Amsterdam <development@buildinamsterdam.com> (https://www.buildinamsterdam.com/)",
 	"main": "dist/index.js",
