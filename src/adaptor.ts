@@ -1,6 +1,10 @@
 import { LooseObject } from "./types";
 
-export type Adaptor = (entry: LooseObject) => LooseObject;
+export type AdaptorResponse = LooseObject | null;
+
+export type Adaptor = (
+	entry: LooseObject,
+) => Promise<AdaptorResponse> | AdaptorResponse;
 
 export type AdaptorTypes = {
 	[x: string | number | symbol]: Adaptor;
@@ -44,13 +48,19 @@ export class ContentfulAdaptor {
 	 * @function adaptContentType
 	 * @description
 	 */
-	#adaptData = <T>(data: T): T | Array<unknown> | null => {
+	#adaptData = async <T>(data: T): Promise<T | Array<unknown> | null> => {
 		//? Falsy data should always be null so it's parsable by NextJS, 'undefined' throws
 		if (!data) return null;
 
 		//? If we get an array loop the data so we resolved adapted data
 		if (Array.isArray(data)) {
-			return data.map((dataEntry: unknown) => this.#adaptData(dataEntry));
+			const formattedData: unknown[] = [];
+
+			for (const dataEntry of data) {
+				formattedData.push(await this.#adaptData(dataEntry));
+			}
+
+			return formattedData;
 		}
 
 		if (typeof data !== "object") return data;
@@ -61,30 +71,28 @@ export class ContentfulAdaptor {
 			const fieldType = getFieldType(data);
 			const fieldAdaptor = this.#fieldAdaptors[fieldType];
 
-			if (!!fieldAdaptor) return fieldAdaptor(data);
+			if (!!fieldAdaptor) return await fieldAdaptor(data);
 		}
 
-		const adaptedData = Object.entries(data).reduce(
-			(acc: LooseObject, [key, val]) => {
-				acc[key] = this.#adaptData(val);
-				return acc;
-			},
-			{},
-		);
+		const adaptedData: LooseObject = {};
+
+		for (const [key, val] of Object.entries(data)) {
+			adaptedData[key] = await this.#adaptData(val);
+		}
 
 		const adaptor = this.#contentAdaptors[contentType];
 
 		if (!adaptor) return adaptedData;
-		return adaptor(adaptedData);
+		return await adaptor(adaptedData);
 	};
 
-	adapt = <T extends LooseObject>(data: T) => {
+	adapt = async <T extends LooseObject>(data: T) => {
 		if (typeof data !== "object" && !Array.isArray(data)) return null;
 
 		const contentType = getEntryContentType(data);
 
 		const pageAdaptor = this.#pageAdaptors[contentType] || fallbackPageAdaptor;
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		return pageAdaptor(this.#adaptData(data as any));
+		return await pageAdaptor(await this.#adaptData(data as any));
 	};
 }
