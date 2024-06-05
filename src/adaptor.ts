@@ -52,7 +52,7 @@ export class ContentfulAdaptor {
 	 */
 	#adaptData = async <T>(
 		data: T,
-		parentIds: string[] = [],
+		parentIdMap: Record<string, boolean> = {},
 	): Promise<T | Array<unknown> | null> => {
 		//? Falsy data should always be null so it's parsable by NextJS, 'undefined' throws
 		if (!data) return null;
@@ -62,7 +62,7 @@ export class ContentfulAdaptor {
 			const formattedData: unknown[] = [];
 
 			for (const dataEntry of data) {
-				formattedData.push(await this.#adaptData(dataEntry, parentIds));
+				formattedData.push(await this.#adaptData(dataEntry, parentIdMap));
 			}
 
 			return formattedData;
@@ -81,14 +81,14 @@ export class ContentfulAdaptor {
 
 		//? If the current entry is already adapted as a parent, abort to fix circular runtime
 		const contentId = getEntryId(data);
-		if (contentId && parentIds.includes(contentId)) return data;
+		if (contentId && parentIdMap[contentId]) return data;
 
 		const adaptedData: LooseObject = {};
 
 		for (const [key, val] of Object.entries(data)) {
 			adaptedData[key] = await this.#adaptData(
 				val,
-				[...parentIds, contentId].filter(Boolean),
+				contentId ? { ...parentIdMap, [contentId]: true } : parentIdMap,
 			);
 		}
 
