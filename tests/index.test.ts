@@ -2,6 +2,7 @@ import { ContentfulAdaptor } from "../src";
 
 const DATA = {
 	sys: {
+		id: "691tO7BJhybu2T4Hg8KrPZ",
 		contentType: {
 			sys: {
 				id: "page",
@@ -13,6 +14,7 @@ const DATA = {
 		body: [
 			{
 				sys: {
+					id: "691tO7BJhybu2T4Hg8KrPZ1",
 					contentType: {
 						sys: {
 							id: "content",
@@ -23,6 +25,7 @@ const DATA = {
 			},
 			{
 				sys: {
+					id: "691tO7BJhybu2T4Hg8KrPZ2",
 					contentType: {
 						sys: {
 							id: "media",
@@ -41,6 +44,34 @@ const DATA = {
 				},
 			},
 		],
+	},
+};
+
+const CIRCULAR_DATA = {
+	sys: {
+		id: "691tO7BJhybu2T4Hg8KrPZ",
+		contentType: {
+			sys: {
+				id: "page",
+			},
+		},
+	},
+	fields: {
+		title: "Original",
+		link: {
+			sys: {
+				id: "691tO7BJhybu2T4Hg8KrPZ",
+				contentType: {
+					sys: {
+						id: "page",
+					},
+				},
+			},
+			fields: {
+				title: "Original",
+				link: "test",
+			},
+		},
 	},
 };
 
@@ -114,5 +145,20 @@ describe("ContentfulAdaptor", () => {
 
 		expect(outcome.title).toBe("Adapted page title");
 		expect(outcome.fields.body[0]).toBe(null);
+	});
+
+	it("should work references to itself", async () => {
+		const Adaptor = new ContentfulAdaptor({
+			pageAdaptors: {
+				page: (data) => {
+					return { ...data, title: "Adapted page title" };
+				},
+			},
+		});
+		const outcome = (await Adaptor.adapt(CIRCULAR_DATA)) || {};
+
+		//? First title should be adapted the link should not since the IDs of the entries are the same
+		expect(outcome.title).toBe("Adapted page title");
+		expect(outcome.fields.link.fields.title).toBe("Original");
 	});
 });

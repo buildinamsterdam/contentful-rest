@@ -21,6 +21,8 @@ const fallbackPageAdaptor: Adaptor = (x) => x;
 const getEntryContentType = (data: LooseObject): string =>
 	data?.sys?.contentType?.sys?.id || "";
 
+const getEntryId = (data: LooseObject): string => data?.sys?.id || "";
+
 const getFieldType = (data: LooseObject): string => data?.sys?.type || "";
 
 /**
@@ -48,7 +50,10 @@ export class ContentfulAdaptor {
 	 * @function adaptContentType
 	 * @description
 	 */
-	#adaptData = async <T>(data: T): Promise<T | Array<unknown> | null> => {
+	#adaptData = async <T>(
+		data: T,
+		parentIds: string[] = [],
+	): Promise<T | Array<unknown> | null> => {
 		//? Falsy data should always be null so it's parsable by NextJS, 'undefined' throws
 		if (!data) return null;
 
@@ -57,7 +62,7 @@ export class ContentfulAdaptor {
 			const formattedData: unknown[] = [];
 
 			for (const dataEntry of data) {
-				formattedData.push(await this.#adaptData(dataEntry));
+				formattedData.push(await this.#adaptData(dataEntry, parentIds));
 			}
 
 			return formattedData;
@@ -74,10 +79,17 @@ export class ContentfulAdaptor {
 			if (!!fieldAdaptor) return await fieldAdaptor(data);
 		}
 
+		//? If the current entry is already adapted as a parent, abort to fix circular runtime
+		const contentId = getEntryId(data);
+		if (contentId && parentIds.includes(contentId)) return data;
+
 		const adaptedData: LooseObject = {};
 
 		for (const [key, val] of Object.entries(data)) {
-			adaptedData[key] = await this.#adaptData(val);
+			adaptedData[key] = await this.#adaptData(
+				val,
+				[...parentIds, contentId].filter(Boolean),
+			);
 		}
 
 		const adaptor = this.#contentAdaptors[contentType];
