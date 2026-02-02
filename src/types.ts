@@ -1,4 +1,4 @@
-import { Entry } from "contentful";
+import type { Entry } from "contentful";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type LooseObject = Record<string | number | symbol, any>;
