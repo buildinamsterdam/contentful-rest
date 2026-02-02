@@ -14,6 +14,7 @@ const DATA = {
 		emptyString: "",
 		isHidden: false,
 		count: 0,
+		linkedPost: undefined,
 		body: [
 			{
 				sys: {
@@ -102,6 +103,7 @@ describe("ContentfulAdaptor", () => {
 		expect(outcome.fields.emptyString).toBe("");
 		expect(outcome.fields.isHidden).toBe(false);
 		expect(outcome.fields.count).toBe(0);
+		expect(outcome.fields.linkedPost).toBe(null);
 		expect(outcome.fields.body[0].subtitle).toBe("Block subtitle");
 		expect(outcome.fields.body[1].fields.src).toBe("http://");
 	});
