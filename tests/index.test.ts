@@ -13,6 +13,7 @@ const DATA = {
 		title: "Page title",
 		emptyString: "",
 		isHidden: false,
+		count: 0,
 		body: [
 			{
 				sys: {
@@ -100,6 +101,7 @@ describe("ContentfulAdaptor", () => {
 		expect(outcome.title).toBe("Adapted page title");
 		expect(outcome.fields.emptyString).toBe("");
 		expect(outcome.fields.isHidden).toBe(false);
+		expect(outcome.fields.count).toBe(0);
 		expect(outcome.fields.body[0].subtitle).toBe("Block subtitle");
 		expect(outcome.fields.body[1].fields.src).toBe("http://");
 	});
