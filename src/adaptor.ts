@@ -1,4 +1,4 @@
-import { LooseObject } from "./types";
+import type { LooseObject } from "./types";
 
 export type AdaptorResponse = LooseObject | null;
 
@@ -55,7 +55,10 @@ export class ContentfulAdaptor {
 		parentIdMap: Record<string, boolean> = {},
 	): Promise<T | Array<unknown> | null> => {
 		//? Falsy data should always be null so it's parsable by NextJS, 'undefined' throws
-		if (!data) return null;
+		if (!data) {
+			if (typeof data === "undefined") return null;
+			return data;
+		}
 
 		//? If we get an array loop the data so we resolved adapted data
 		if (Array.isArray(data)) {

@@ -1,9 +1,9 @@
-import { Entry } from "contentful";
+import type { Entry } from "contentful";
 import resolveResponse from "contentful-resolve-response";
 
 import { ContentfulAdaptor } from "./adaptor";
 import { stringifySafe } from "./utils/stringifySafe";
-import {
+import type {
 	EntriesList,
 	EntriesResponse,
 	LooseObject,
